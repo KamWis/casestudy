@@ -20,10 +20,11 @@ const getCrumbs = (pathname: string) => {
 
 export default function Breadcrumbs() {
   const pathname = usePathname();
+
   const crumbs = getCrumbs(pathname).slice(0, -1);
 
   return (
-    <div className="text-stone-600">
+    <div className="text-stone-600" data-testid="breadcrumbs-component">
       {crumbs.map((crumb: Breadcrumb, i) => {
         return (
           <span key={crumb.path}>
