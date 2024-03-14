@@ -27,6 +27,8 @@ export default function ReportTable({
   checkboxSelection,
 }: ReportTableProps) {
   const [tableRows, setTableRows] = useState(rows);
+  //Normally we would rely on ApolloClient to handle loading state and errors
+  const [errorMessage, setErrorMessage] = useState("");
 
   const debouncedSearch = useMemo(
     () =>
@@ -45,7 +47,12 @@ export default function ReportTable({
           { issueDate: "ASC" }
         );
 
-        setTableRows(data.records);
+        if (data.error) {
+          setErrorMessage(data.error?.message);
+          return;
+        }
+
+        setTableRows(data.records!);
       }, 300),
     []
   );
@@ -69,29 +76,34 @@ export default function ReportTable({
           }}
         />
       </div>
-      <div className="w-full flex flex-wrap">
-        <div className="w-full">
-          <Table
-            // setSortBy={callback}
-            // removeEntry={callback}
-            // setOffset={callback}
-            columns={columns}
-            rows={tableRows}
-            checkboxSelection={checkboxSelection}
-            onSelectRows={(selectedRows) =>
-              console.log("Selected Rows: ", selectedRows)
-            }
-          />
-        </div>
-        <div className="w-full flex justify-center mt-5 mb-10 relative">
-          <Button className="text-lg text-gray-600">
-            Show more <ChevronDownIcon className="ml-2" />
-          </Button>
-          <div className="text-gray-500 text-sm absolute right-0 top-1">
-            Showing {rows.length} of {total} records
+      {errorMessage ? (
+        <div className="w-full bg-red-600 text-white p-3">{errorMessage}</div>
+      ) : null}
+      {!errorMessage && (
+        <div className="w-full flex flex-wrap">
+          <div className="w-full">
+            <Table
+              // setSortBy={callback}
+              // removeEntry={callback}
+              // setOffset={callback}
+              columns={columns}
+              rows={tableRows}
+              checkboxSelection={checkboxSelection}
+              onSelectRows={(selectedRows) =>
+                console.log("Selected Rows: ", selectedRows)
+              }
+            />
+          </div>
+          <div className="w-full flex justify-center mt-5 mb-10 relative">
+            <Button className="text-lg text-gray-600">
+              Show more <ChevronDownIcon className="ml-2" />
+            </Button>
+            <div className="text-gray-500 text-sm absolute right-0 top-1">
+              Showing {rows.length} of {total} records
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

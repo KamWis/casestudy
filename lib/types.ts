@@ -18,11 +18,11 @@ export type Invoice = {
 
 
 export interface TableReponse<T> {
-  total: number;
-  offset: number;
-  limit: number;
-  errors?: Error[];
-  records: T;
+  total?: number;
+  offset?: number;
+  limit?: number;
+  error?: Error;
+  records?: T;
 }
 
 export type Filter = Record<string, any>;

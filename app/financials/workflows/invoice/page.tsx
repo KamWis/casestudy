@@ -44,7 +44,6 @@ export default async function Invoice() {
   const dateTo = endOfMonth(new Date()).getTime();
 
   const data = await getInvoices(dateFrom, dateTo, {}, { issueDate: "ASC" });
-
   return (
     <div className="w-full">
       <div className="bg-pistachio w-full self-start">
@@ -54,12 +53,19 @@ export default async function Invoice() {
       </div>
       <div className="container m-auto">
         <div className="px-4 md:px-0">
-          <ReportTable
-            checkboxSelection={true}
-            total={data.total}
-            columns={COLUMNS_CONFIG}
-            rows={data.records}
-          />
+          {data.error && (
+            <div className="w-full bg-red-600 text-white p-3">
+              {data.error.message}
+            </div>
+          )}
+          {!data.error && (
+            <ReportTable
+              checkboxSelection={true}
+              total={data.total!}
+              columns={COLUMNS_CONFIG}
+              rows={data.records!}
+            />
+          )}
         </div>
       </div>
     </div>
