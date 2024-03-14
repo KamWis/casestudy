@@ -72,6 +72,11 @@ export async function getInvoices(
     }
   });
 
+  console.log("Here are the vars that would be a part of a Query: ", { dateFrom,
+    dateTo,
+    filters,
+    orderBy })
+
   // fake it till you make it
   if (filters.has?.text) {
     const searchText = filters.has?.text.toLowerCase();
