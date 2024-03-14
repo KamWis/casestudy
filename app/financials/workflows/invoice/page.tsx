@@ -1,6 +1,7 @@
 import { startOfMonth, endOfMonth } from "date-fns";
 
 import Header from "@/components/report-header";
+import ReportTable from "@/container/report-table";
 import { getInvoices } from "@/lib/api";
 
 export default async function Invoice() {
@@ -8,7 +9,7 @@ export default async function Invoice() {
   const dateTo = endOfMonth(new Date()).getTime();
 
   const data = await getInvoices(dateFrom, dateTo, {}, { issueDate: "ASC" });
-  console.log("data: ", data);
+
   return (
     <div className="w-full">
       <div className="bg-pistachio w-full self-start">
@@ -16,7 +17,11 @@ export default async function Invoice() {
           <Header text="Invoice" />
         </div>
       </div>
-      <div className="container m-auto"></div>
+      <div className="container m-auto">
+        <div className="px-4 md:px-0">
+          <ReportTable rows={data.records} />
+        </div>
+      </div>
     </div>
   );
 }
