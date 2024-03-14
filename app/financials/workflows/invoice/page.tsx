@@ -1,12 +1,22 @@
-import LinkList from "@/components/link-list";
+import { startOfMonth, endOfMonth } from "date-fns";
 
-const MENU_ITEMS = [{ href: "/financials/workflows/invoice", text: "Invoice" }];
+import Header from "@/components/report-header";
+import { getInvoices } from "@/lib/api";
 
-export default function Financials() {
+export default async function Invoice() {
+  const dateFrom = startOfMonth(new Date()).getTime();
+  const dateTo = endOfMonth(new Date()).getTime();
+
+  const data = await getInvoices(dateFrom, dateTo, {}, { issueDate: "ASC" });
+  console.log("data: ", data);
   return (
-    <div className="text-center">
-      <h1 className="text-6xl mb-8">Invoice</h1>
-      <LinkList items={MENU_ITEMS} />
+    <div className="w-full">
+      <div className="bg-pistachio w-full self-start">
+        <div className="container m-auto">
+          <Header text="Invoice" />
+        </div>
+      </div>
+      <div className="container m-auto"></div>
     </div>
   );
 }
