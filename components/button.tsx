@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, MouseEventHandler } from "react";
 import clsx from "clsx";
 
 export default function Button({
@@ -7,7 +7,7 @@ export default function Button({
   children,
 }: {
   className?: string;
-  onClick?: (...args: any[]) => any;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   children: ReactNode;
 }) {
   return (

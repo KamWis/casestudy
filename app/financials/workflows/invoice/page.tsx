@@ -1,8 +1,43 @@
 import { startOfMonth, endOfMonth } from "date-fns";
 
 import Header from "@/components/report-header";
-import ReportTable from "@/container/report-table";
+import ReportTable from "@/containers/report-table";
 import { getInvoices } from "@/lib/api";
+
+const COLUMNS_CONFIG = [
+  {
+    name: "Issue Date",
+    sortable: true,
+  },
+  {
+    name: "Due Date",
+    sortable: true,
+  },
+  {
+    name: "Transaction No.",
+    sortable: true,
+  },
+  {
+    name: "Customer",
+    sortable: true,
+  },
+  {
+    name: "Company",
+    sortable: true,
+  },
+  {
+    name: "Total",
+    sortable: true,
+  },
+  {
+    name: "Currency",
+    sortable: true,
+  },
+  {
+    name: "Exchange Rate",
+    sortable: true,
+  },
+];
 
 export default async function Invoice() {
   const dateFrom = startOfMonth(new Date()).getTime();
@@ -19,7 +54,12 @@ export default async function Invoice() {
       </div>
       <div className="container m-auto">
         <div className="px-4 md:px-0">
-          <ReportTable rows={data.records} />
+          <ReportTable
+            checkboxSelection={true}
+            total={data.total}
+            columns={COLUMNS_CONFIG}
+            rows={data.records}
+          />
         </div>
       </div>
     </div>
