@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import { Table as RadixTable, Checkbox } from "@radix-ui/themes";
 import { useCallback, useState } from "react";
+import { format } from "date-fns";
 
 export type TableProps = {
   columns: { name: string; sortable: boolean }[];
@@ -40,6 +41,14 @@ const SelectCell = ({
     </RadixTable.Cell>
   );
 };
+
+const formatCell = (row: Record<string, string | number>, key: string) => {
+  if (key === 'issueDate' || key === 'dueDate') {
+    return format(row[key], 'MM/dd/yyyy');
+  }
+  
+  return row[key];
+}
 
 export default function Table({
   columns,
@@ -126,12 +135,13 @@ export default function Table({
               {Object.keys(row)
                 .filter((cell) => cell !== "id")
                 .map((cell) => {
+                  const formattedCell = formatCell(row, cell);
                   return (
                     <RadixTable.Cell
                       key={row.id + cell}
                       className="!font-medium !py-2 !h-4 text-base !text-gray-600"
                     >
-                      {row[cell]}
+                      {formattedCell}
                     </RadixTable.Cell>
                   );
                 })}
